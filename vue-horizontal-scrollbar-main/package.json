@@ -1,0 +1,73 @@
+{
+  "name": "vue2-horizontal-scrollbar",
+  "private": false,
+  "type": "module",
+  "version": "0.0.8",
+
+  "packageManager": "pnpm@10.12.3",
+  "description": "A customizable horizontal scrollbar component for Vue 2",
+  "keywords": [
+    "vue2",
+    "vue",
+    "scrollbar",
+    "horizontal",
+    "scroll",
+    "component",
+    "typescript"
+  ],
+  "homepage": "https://github.com/reeswell/vue2-horizontal-scrollbar#readme",
+  "bugs": {
+    "url": "https://github.com/reeswell/vue2-horizontal-scrollbar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reeswell/vue2-horizontal-scrollbar.git"
+  },
+  "license": "MIT",
+  "main": "dist/vue2-horizontal-scrollbar.umd.js",
+  "module": "dist/vue2-horizontal-scrollbar.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue2-horizontal-scrollbar.es.js",
+      "require": "./dist/vue2-horizontal-scrollbar.umd.js"
+    },
+    "./dist/style.css": {
+      "import": "./dist/style.css",
+      "require": "./dist/style.css"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "prepublishOnly": "npm run build",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "jsdom": "^26.1.0",
+    "lodash": "^4.17.21"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.202",
+    "@vitejs/plugin-vue2": "^2.0.3",
+    "@vue/test-utils": "^1.3.0",
+    "terser": "^5.0.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0",
+    "vitest": "^0.28.5",
+    "vue": "^2.7.0",
+    "vue-template-compiler": "^2.7.0"
+  },
+  "engines": {
+    "node": ">= 20"
+  }
+}
