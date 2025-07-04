@@ -11,10 +11,14 @@ export interface ScrollInfo {
 
 
 export interface HorizontalScrollbarProps {
-  /** Target scroll container selector */
-  targetSelector: ElementSelector
-  /** Target content selector */
-  contentSelector: ElementSelector
+  /** Target scroll container selector or ref */
+  targetSelector?: ElementSelector
+  /** Target content selector or ref */
+  contentSelector?: ElementSelector
+  /** Target scroll container ref name */
+  targetRef?: string
+  /** Target content ref name */
+  contentRef?: string
   /** Whether to auto show/hide scrollbar */
   autoShow?: boolean
   /** Minimum scroll distance to show scrollbar */

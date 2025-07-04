@@ -2,7 +2,7 @@
   "name": "vue2-horizontal-scrollbar",
   "private": false,
   "type": "module",
-  "version": "0.0.8",
+  "version": "0.0.3",
 
   "packageManager": "pnpm@10.12.3",
   "description": "A customizable horizontal scrollbar component for Vue 2",
@@ -15,13 +15,13 @@
     "component",
     "typescript"
   ],
-  "homepage": "https://github.com/reeswell/vue2-horizontal-scrollbar#readme",
+  "homepage": "https://github.com/yangmeishux/vue2-horizontal-scrollbar#readme",
   "bugs": {
-    "url": "https://github.com/reeswell/vue2-horizontal-scrollbar/issues"
+    "url": "https://github.com/yangmeishux/vue2-horizontal-scrollbar/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reeswell/vue2-horizontal-scrollbar.git"
+    "url": "git+https://github.com/yangmeishux/vue2-horizontal-scrollbar.git"
   },
   "license": "MIT",
   "main": "dist/vue2-horizontal-scrollbar.umd.js",

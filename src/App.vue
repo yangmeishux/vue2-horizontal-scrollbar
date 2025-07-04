@@ -1,22 +1,73 @@
 <template>
   <div class="demo-container">
-    <h1>Vue Horizontal Scrollbar Demo</h1>
+    <h1>Vue2 Horizontal Scrollbar Demo</h1>
 
-    <div class="scroll-container" ref="scrollContainer">
-      <div class="wide-content">
-        <div v-for="i in 50" :key="i" class="content-block">
-          Block {{ i }}
+    <!-- 使用 Selector 方式的示例 -->
+    <section class="demo-section">
+      <h2>1. Using Selectors (Traditional Way)</h2>
+      <div class="scroll-container" ref="scrollContainer">
+        <div class="wide-content">
+          <div v-for="i in 25" :key="i" class="content-block">
+            Block {{ i }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <VueHorizontalScrollbar ref="scrollbar" target-selector=".scroll-container" contentSelector=".wide-content" />
+      <VueHorizontalScrollbar 
+        ref="scrollbar1" 
+        target-selector=".scroll-container" 
+        content-selector=".wide-content" 
+        @scroll="onScroll1"
+      />
 
-    <div class="controls">
-      <button @click="scrollTo(0)">Scroll to Start</button>
-      <button @click="scrollToMiddle">Scroll to Middle</button>
-      <button @click="scrollToEnd">Scroll to End</button>
-    </div>
+      <div class="controls">
+        <button @click="scrollTo1(0)">Scroll to Start</button>
+        <button @click="scrollToMiddle1">Scroll to Middle</button>
+        <button @click="scrollToEnd1">Scroll to End</button>
+      </div>
+    </section>
+
+    <!-- 使用 Ref 方式的示例 -->
+    <section class="demo-section">
+      <h2>2. Using Refs (Recommended Way)</h2>
+      <div ref="scrollContainer2" class="scroll-container">
+        <div ref="scrollContent2" class="wide-content">
+          <div v-for="i in 25" :key="`ref-${i}`" class="content-block">
+            Ref Block {{ i }}
+          </div>
+        </div>
+      </div>
+
+      <VueHorizontalScrollbar 
+        ref="scrollbar2" 
+        target-ref="scrollContainer2" 
+        content-ref="scrollContent2" 
+        @scroll="onScroll2"
+      />
+
+      <div class="controls">
+        <button @click="scrollTo2(0)">Scroll to Start</button>
+        <button @click="scrollToMiddle2">Scroll to Middle</button>
+        <button @click="scrollToEnd2">Scroll to End</button>
+      </div>
+    </section>
+
+    <!-- 状态显示 -->
+    <section class="demo-section">
+      <h2>Scroll Status</h2>
+      <div class="status-panel">
+        <div class="status-item">
+          <strong>Selector Method:</strong> 
+          Scroll: {{ scrollInfo1.scrollLeft }} / {{ scrollInfo1.maxScroll }} 
+          ({{ scrollInfo1.scrollPercent.toFixed(1) }}%)
+        </div>
+        <div class="status-item">
+          <strong>Ref Method:</strong> 
+          Scroll: {{ scrollInfo2.scrollLeft }} / {{ scrollInfo2.maxScroll }} 
+          ({{ scrollInfo2.scrollPercent.toFixed(1) }}%)
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -28,166 +79,86 @@ export default {
   components: {
     VueHorizontalScrollbar
   },
+  data() {
+    return {
+      scrollInfo1: {
+        scrollLeft: 0,
+        maxScroll: 0,
+        scrollPercent: 0
+      },
+      scrollInfo2: {
+        scrollLeft: 0,
+        maxScroll: 0,
+        scrollPercent: 0
+      }
+    }
+  },
   methods: {
-    scrollTo(position) {
-      this.$refs.scrollbar?.scrollToPosition(position)
+    // Selector 方式的方法
+    scrollTo1(position) {
+      this.$refs.scrollbar1?.scrollToPosition(position)
     },
-    scrollToMiddle() {
-      if (this.$refs.scrollbar) {
-        const middle = this.$refs.scrollbar.maxScroll / 2
-        this.scrollTo(middle)
+    scrollToMiddle1() {
+      if (this.$refs.scrollbar1) {
+        const middle = this.$refs.scrollbar1.maxScroll / 2
+        this.scrollTo1(middle)
       }
     },
-    scrollToEnd() {
-      this.$refs.scrollbar?.scrollToEnd()
+    scrollToEnd1() {
+      this.$refs.scrollbar1?.scrollToEnd()
+    },
+    onScroll1(info) {
+      this.scrollInfo1 = info
+    },
+
+    // Ref 方式的方法
+    scrollTo2(position) {
+      this.$refs.scrollbar2?.scrollToPosition(position)
+    },
+    scrollToMiddle2() {
+      if (this.$refs.scrollbar2) {
+        const middle = this.$refs.scrollbar2.maxScroll / 2
+        this.scrollTo2(middle)
+      }
+    },
+    scrollToEnd2() {
+      this.$refs.scrollbar2?.scrollToEnd()
+    },
+    onScroll2(info) {
+      this.scrollInfo2 = info
     }
   }
 }
 </script>
 
 <style scoped>
-/* 基础滚动容器 */
-.basic-scroll-container {
+.demo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.demo-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.demo-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+}
+
+.scroll-container {
   width: 100%;
   height: 200px;
   overflow: auto;
-  border: 2px solid #e0e0e0;
-  border-radius: 4px;
-}
-
-.basic-scroll-content {
-  /* width: 1200px; */
-  height: 180px;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-
-
-
-
-/* 卡片列表 */
-.card-container {
-  width: 100%;
-  overflow-x: auto;
-  padding: 10px 0;
-}
-
-.card-list {
-  display: flex;
-  gap: 16px;
-  width: max-content;
-  padding: 0 10px;
-}
-
-.card-item {
-  width: 200px;
-  height: 120px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #333;
-  flex-shrink: 0;
-}
-
-.card-item:nth-child(odd) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.card-item:nth-child(even) {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-}
-
-/* 控制面板 */
-.control-panel {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.control-group {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.control-group:last-child {
-  margin-bottom: 0;
-}
-
-.control-group label {
-  font-weight: 500;
-  min-width: 120px;
-}
-
-.control-group input,
-.control-group select {
-  padding: 4px 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.control-group button {
-  padding: 6px 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.control-group button:hover {
-  background: #0056b3;
-}
-
-/* 侧边栏布局演示 */
-.layout-demo {
-  height: 400px;
-  display: flex;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.sidebar {
-  width: 200px;
-  background: #2c3e50;
-  color: white;
-  padding: 20px;
-  transition: width 0.3s ease;
-  flex-shrink: 0;
-}
-
-.sidebar.collapsed {
-  width: 60px;
-}
-
-.sidebar-toggle {
-  background: #34495e;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.main-content {
-  flex: 1;
-  overflow: auto;
+  border: 1px solid #eee;
+  margin: 20px 0;
   background: white;
 }
 
@@ -197,51 +168,21 @@ export default {
   background: linear-gradient(45deg, #3498db, #e74c3c, #f39c12, #27ae60);
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
+  padding: 10px;
 }
-
-/* 状态显示 */
-.status-panel {
-  background: #e8f5e8;
-  border: 1px solid #c3e6c3;
-  border-radius: 4px;
-  padding: 12px;
-  margin-top: 16px;
-  font-family: monospace;
-  font-size: 14px;
-}
-
-.status-item {
-  margin-bottom: 4px;
-}
-
-.status-item:last-child {
-  margin-bottom: 0;
-}
-
-.scroll-container {
-  width: 100%;
-  height: 200px;
-  overflow: auto;
-  border: 1px solid #eee;
-  margin: 20px 0;
-}
-
-
 
 .content-block {
   width: 150px;
   height: 150px;
   margin: 10px;
-  color: #42b883;
-  background: #e6f7f0;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
+  font-weight: bold;
+  flex-shrink: 0;
 }
 
 .controls {
@@ -257,5 +198,34 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #3aa876;
+}
+
+.status-panel {
+  background: #e8f5e8;
+  border: 1px solid #c3e6c3;
+  border-radius: 4px;
+  padding: 16px;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.status-item {
+  margin-bottom: 8px;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+}
+
+.status-item:last-child {
+  margin-bottom: 0;
+}
+
+.status-item strong {
+  color: #2c3e50;
 }
 </style>

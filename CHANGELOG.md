@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.9] - 2025-01-27
+
+### Added
+
+- Added support for ref names (targetRef, contentRef) as alternatives to selectors
+- Made targetSelector and contentSelector optional
+- Added getElementByRef method to find elements by ref names
+- Updated documentation with ref usage examples
+
+### Changed
+
+- Improved error messages to guide users on proper usage
+- Updated README with recommended ref-based usage
+
 ## [0.0.8] - 2025-01-27
 
 ### Fixed

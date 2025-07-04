@@ -23,11 +23,19 @@ export default {
   props: {
     targetSelector: {
       type: [String, Function, Object],
-      required: true
+      required: false
     },
     contentSelector: {
       type: [String, Function, Object],
-      required: true
+      required: false
+    },
+    targetRef: {
+      type: String,
+      required: false
+    },
+    contentRef: {
+      type: String,
+      required: false
     },
     autoShow: {
       type: Boolean,
@@ -152,15 +160,54 @@ export default {
       }
     },
 
+    getElementByRef(refName) {
+      try {
+        if (!refName) return null
+        
+        // 查找当前组件的父级组件
+        let parent = this.$parent
+        while (parent) {
+          if (parent.$refs && parent.$refs[refName]) {
+            return parent.$refs[refName]
+          }
+          parent = parent.$parent
+        }
+        
+        // 如果父级没找到，尝试查找根组件
+        const root = this.$root
+        if (root && root.$refs && root.$refs[refName]) {
+          return root.$refs[refName]
+        }
+        
+        console.warn(`[VueHorizontalScrollbar] Ref not found: ${refName}`)
+        this.$emit('error', new Error(`Ref not found: ${refName}`))
+        return null
+      } catch (error) {
+        console.error('[VueHorizontalScrollbar] Error getting element by ref:', error)
+        this.$emit('error', error)
+        return null
+      }
+    },
+
     async initializeTarget() {
       try {
         await this.$nextTick()
 
-        this.targetElement = this.getElement(this.targetSelector)
-        this.contentElement = this.getElement(this.contentSelector)
+        // 优先使用 ref，如果没有则使用 selector
+        if (this.targetRef) {
+          this.targetElement = this.getElementByRef(this.targetRef)
+        } else if (this.targetSelector) {
+          this.targetElement = this.getElement(this.targetSelector)
+        }
+
+        if (this.contentRef) {
+          this.contentElement = this.getElementByRef(this.contentRef)
+        } else if (this.contentSelector) {
+          this.contentElement = this.getElement(this.contentSelector)
+        }
 
         if (!this.targetElement || !this.contentElement) {
-          throw new Error('Target or content element not found')
+          throw new Error('Target or content element not found. Please provide either targetRef/contentRef or targetSelector/contentSelector.')
         }
 
         this.setupScrollListener()

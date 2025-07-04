@@ -20,6 +20,8 @@ A customizable horizontal scrollbar component for Vue 2 that provides smooth scr
 
 ## 📦 Installation
 
+### Package Manager
+
 ```bash
 # npm
 npm install vue2-horizontal-scrollbar
@@ -31,13 +33,172 @@ yarn add vue2-horizontal-scrollbar
 pnpm add vue2-horizontal-scrollbar
 ```
 
+### CDN
+
+```html
+<!-- UMD version -->
+<script src="https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/vue2-horizontal-scrollbar.umd.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/style.css">
+
+<!-- ES Module version -->
+<script type="module">
+  import { VueHorizontalScrollbar } from 'https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/vue2-horizontal-scrollbar.es.js';
+</script>
+```
+
 ## 📺 Demo
 
 [Vue2 Horizontal Scrollbar Demo](https://demo.dynaxfy.com/vue2-horizontal-scrollbar)
 
 ## 🚀 Quick Start
 
+### CDN Usage
+
+You can also use this component via CDN without any build step:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue2 Horizontal Scrollbar Demo</title>
+  <!-- Vue 2 CDN -->
+  <script src="https://unpkg.com/vue@2.7.0/dist/vue.js"></script>
+  <!-- Vue2 Horizontal Scrollbar CDN -->
+  <script src="https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/vue2-horizontal-scrollbar.umd.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Your scrollable content -->
+    <div id="scroll-container" style="overflow-x: auto; width: 100%; height: 200px;">
+      <div id="scroll-content" style="width: 2000px; height: 200px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);">
+        <p style="color: white; text-align: center; line-height: 200px;">This content is wider than the container...</p>
+      </div>
+    </div>
+    
+    <!-- Horizontal Scrollbar -->
+    <vue-horizontal-scrollbar
+      target-selector="#scroll-container"
+      content-selector="#scroll-content"
+      :auto-show="true"
+      @scroll="onScroll">
+    </vue-horizontal-scrollbar>
+  </div>
+
+  <script>
+    // Register the plugin globally
+    Vue.use(Vue2HorizontalScrollbar.HorizontalScrollbarPlugin);
+    
+    new Vue({
+      el: '#app',
+      methods: {
+        onScroll(info) {
+          console.log('Scroll info:', info);
+          // { scrollLeft: 100, maxScroll: 1000, scrollPercent: 10 }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+```
+
+### CDN with ES6 Modules
+
+If you prefer using ES6 modules with CDN:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue2 Horizontal Scrollbar ES6 Demo</title>
+  <!-- Vue 2 CDN -->
+  <script src="https://unpkg.com/vue@2.7.0/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="scroll-container" style="overflow-x: auto; width: 100%; height: 200px;">
+      <div id="scroll-content" style="width: 2000px; height: 200px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4);">
+        <p style="color: white; text-align: center; line-height: 200px;">Wide content here...</p>
+      </div>
+    </div>
+    
+    <vue-horizontal-scrollbar
+      target-selector="#scroll-container"
+      content-selector="#scroll-content">
+    </vue-horizontal-scrollbar>
+  </div>
+
+  <script type="module">
+    import { VueHorizontalScrollbar } from 'https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/vue2-horizontal-scrollbar.es.js';
+    
+    Vue.component('vue-horizontal-scrollbar', VueHorizontalScrollbar);
+    
+    new Vue({
+      el: '#app'
+    });
+  </script>
+</body>
+</html>
+```
+
+### CDN Links
+
+| Type | URL | Description |
+|------|-----|-------------|
+| **UMD** | `https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/vue2-horizontal-scrollbar.umd.js` | Universal module definition, works in browsers and Node.js |
+| **ES Module** | `https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/vue2-horizontal-scrollbar.es.js` | ES6 module format for modern bundlers |
+| **CSS** | `https://unpkg.com/vue2-horizontal-scrollbar@0.0.2/dist/style.css` | Component styles |
+
 ### Basic Usage
+
+#### Using Ref Names (Recommended)
+
+```vue
+<template>
+  <div>
+    <!-- Your scrollable content -->
+    <div ref="scrollContainer" style="overflow-x: auto; width: 100%;">
+      <div ref="scrollContent" style="width: 2000px; height: 200px;">
+        <!-- Wide content here -->
+        <p>This content is wider than the container...</p>
+      </div>
+    </div>
+    
+    <!-- Horizontal Scrollbar -->
+    <VueHorizontalScrollbar
+      target-ref="scrollContainer"
+      content-ref="scrollContent"
+      :auto-show="true"
+      @scroll="onScroll"
+    />
+  </div>
+</template>
+
+<script>
+import { VueHorizontalScrollbar } from 'vue2-horizontal-scrollbar'
+import "vue2-horizontal-scrollbar/dist/style.css"
+
+export default {
+  components: {
+    VueHorizontalScrollbar
+  },
+  methods: {
+    onScroll(info) {
+      console.log('Scroll info:', info)
+      // { scrollLeft: 100, maxScroll: 1000, scrollPercent: 10 }
+    }
+  }
+}
+</script>
+```
+
+#### Using Selectors (Alternative)
 
 ```vue
 <template>
@@ -113,8 +274,10 @@ new Vue({
 
 | Prop              | Type               | Default                  | Description                                                                 |
 |-------------------|--------------------|--------------------------|-----------------------------------------------------------------------------|
-| `targetSelector`  | `string \| Function` | —                        | **Required.** CSS selector or function returning the scroll container element |
-| `contentSelector` | `string \| Function` | —                        | **Required.** CSS selector or function returning the content element         |
+| `targetSelector`  | `string \| Function` | —                        | CSS selector or function returning the scroll container element |
+| `contentSelector` | `string \| Function` | —                        | CSS selector or function returning the content element         |
+| `targetRef`       | `string`           | —                        | Ref name of the scroll container element (alternative to targetSelector)    |
+| `contentRef`      | `string`           | —                        | Ref name of the content element (alternative to contentSelector)            |
 | `autoShow`        | `boolean`          | `true`                   | Auto show/hide scrollbar based on content width                             |
 | `minScrollDistance` | `number`         | `50`                     | Minimum scroll distance to show scrollbar (when `autoShow` is true)         |
 | `height`          | `number`           | `16`                     | Scrollbar height in pixels                                                  |
@@ -222,9 +385,69 @@ export default {
     }
   }
 }
-```
-const getContent = () => contentRef.value
 </script>
+```
+
+### Using Ref Names (Recommended)
+
+The simplest way to use the component is with ref names:
+
+```vue
+<template>
+  <div ref="scrollContainer">
+    <div ref="scrollContent">
+      <!-- Your wide content here -->
+      <div v-for="i in 50" :key="i" class="content-block">
+        Block {{ i }}
+      </div>
+    </div>
+  </div>
+  
+  <VueHorizontalScrollbar
+    target-ref="scrollContainer"
+    content-ref="scrollContent"
+    :auto-show="true"
+    @scroll="onScroll"
+  />
+</template>
+
+<script>
+import { VueHorizontalScrollbar } from 'vue2-horizontal-scrollbar'
+import "vue2-horizontal-scrollbar/dist/style.css"
+
+export default {
+  components: {
+    VueHorizontalScrollbar
+  },
+  methods: {
+    onScroll(info) {
+      console.log('Scroll info:', info)
+    }
+  }
+}
+</script>
+
+<style>
+.scrollContainer {
+  overflow-x: auto;
+  width: 100%;
+  height: 200px;
+}
+
+.scrollContent {
+  width: 2000px;
+  height: 100%;
+}
+
+.content-block {
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  background: #e6f7f0;
+  display: inline-block;
+  border-radius: 4px;
+}
+</style>
 ```
 
 ### Element Plus Table Use
